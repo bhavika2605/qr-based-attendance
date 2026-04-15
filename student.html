@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Attendance</title>
+</head>
+<body style="text-align:center; font-family:Arial;">
+  <h1>🎓 Attendance Marked</h1>
+  <p id="message"></p>
+
+  <script>
+    let params = new URLSearchParams(window.location.search);
+    let lecture = params.get("lecture") || "Unknown";
+
+    let roll = prompt("Enter your roll number:");
+    let time = new Date().toLocaleString();
+
+    let attendance = JSON.parse(localStorage.getItem("attendance")) || [];
+    attendance.push({ lecture, roll, time });
+
+    localStorage.setItem("attendance", JSON.stringify(attendance));
+
+    document.getElementById("message").innerHTML =
+      `✅ Attendance marked for <b>${lecture}</b><br>
+       Roll No: <b>${roll}</b><br>
+       Time: ${time}`;
+  </script>
+</body>
+</html>
