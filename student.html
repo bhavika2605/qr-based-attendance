@@ -8,21 +8,38 @@
   <p id="message"></p>
 
   <script>
-    let params = new URLSearchParams(window.location.search);
-    let lecture = params.get("lecture") || "Unknown";
+  let params = new URLSearchParams(window.location.search);
+  let lecture = params.get("lecture") || "Unknown";
 
-    let roll = prompt("Enter your roll number:");
-    let time = new Date().toLocaleString();
+  let roll = prompt("Enter your roll number:");
+  let time = new Date().toLocaleString();
 
-    let attendance = JSON.parse(localStorage.getItem("attendance")) || [];
-    attendance.push({ lecture, roll, time });
-
-    localStorage.setItem("attendance", JSON.stringify(attendance));
-
-    document.getElementById("message").innerHTML =
-      `✅ Attendance marked for <b>${lecture}</b><br>
-       Roll No: <b>${roll}</b><br>
-       Time: ${time}`;
-  </script>
+  fetch("https://script.google.com/macros/s/AKfycbxzA1YfBa0mGb1krldXzrWgjqG7z8jkTyy2RYi-_I4QswVUjvElIBlUk5dDlM7Gpb3m3A/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      lecture: lecture,
+      roll: roll,
+      time: time
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    document.body.innerHTML = `
+      <h1>✅ Attendance Marked Successfully</h1>
+      <p><b>Lecture:</b> ${lecture}</p>
+      <p><b>Roll No:</b> ${roll}</p>
+      <p><b>Time:</b> ${time}</p>
+    `;
+  })
+  .catch(error => {
+    document.body.innerHTML = `
+      <h1>❌ Error marking attendance</h1>
+      <p>Please try again</p>
+    `;
+  });
+</script>
 </body>
 </html>
