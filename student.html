@@ -16,24 +16,14 @@
 
   let scriptURL = "https://script.google.com/macros/s/AKfycbxzA1YfBa0mGb1krldXzrWgjqG7z8jkTyy2RYi-_I4QswVUjvElIBlUk5dDlM7Gpb3m3A/exec";
 
-  let url = `${scriptURL}?lecture=${encodeURIComponent(lecture)}&roll=${encodeURIComponent(roll)}&time=${encodeURIComponent(time)}`;
+  let finalURL =
+    scriptURL +
+    "?lecture=" + encodeURIComponent(lecture) +
+    "&roll=" + encodeURIComponent(roll) +
+    "&time=" + encodeURIComponent(time);
 
-  fetch(url)
-    .then(response => response.text())
-    .then(data => {
-      document.body.innerHTML = `
-        <h1>✅ Attendance Marked Successfully</h1>
-        <p><b>Lecture:</b> ${lecture}</p>
-        <p><b>Roll No:</b> ${roll}</p>
-        <p><b>Time:</b> ${time}</p>
-      `;
-    })
-    .catch(error => {
-      document.body.innerHTML = `
-        <h1>❌ Error marking attendance</h1>
-        <p>Please try again</p>
-      `;
-    });
+  // Redirect directly to Google Apps Script
+  window.location.href = finalURL;
 </script>
 </body>
 </html>
