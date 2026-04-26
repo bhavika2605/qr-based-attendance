@@ -3,22 +3,122 @@
 <head>
   <title>Teacher QR Generator</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 350px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #5a67d8;
+    }
+
+    #qrcode {
+      margin-top: 20px;
+    }
+
+    #linkDisplay {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #555;
+      word-wrap: break-word;
+    }
+
+    .footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: gray;
+    }
+  </style>
 </head>
-<body style="text-align:center; font-family:Arial;">
-  <h1>👨‍🏫 Teacher QR Generator</h1>
-  <input id="lecture" placeholder="Enter Lecture Name">
-  <button onclick="generateQR()">Generate QR</button>
-  <div id="qrcode"></div>
+
+<body>
+
+  <div class="container">
+    <h1>👨‍🏫 QR Generator</h1>
+
+    <input id="lecture" placeholder="Enter Lecture Name">
+
+    <br>
+    <button onclick="generateQR()">Generate QR</button>
+
+    <div id="qrcode"></div>
+    <p id="linkDisplay"></p>
+
+    <div class="footer">QR valid for limited time</div>
+  </div>
 
   <script>
     function generateQR() {
-      let lecture = document.getElementById("lecture").value || "Lecture_001";
+      let lecture = document.getElementById("lecture").value.trim();
+
+      if (!lecture) {
+        alert("Please enter lecture name");
+        return;
+      }
+
       let qrDiv = document.getElementById("qrcode");
       qrDiv.innerHTML = "";
 
-      let link = "https://bhavika2605.github.io/qr-based-attendance/student.html?lecture=" + lecture;
-      new QRCode(qrDiv, link);
+      let now = new Date().toISOString();
+
+      let link = "https://bhavika2605.github.io/qr-based-attendance/student.html?lecture=" 
+                 + lecture + "&time=" + now;
+
+      new QRCode(qrDiv, {
+        text: link,
+        width: 200,
+        height: 200
+      });
+
+      document.getElementById("linkDisplay").innerText = link;
     }
   </script>
+
 </body>
 </html>
